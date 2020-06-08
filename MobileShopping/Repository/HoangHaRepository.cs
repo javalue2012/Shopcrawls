@@ -21,9 +21,12 @@ namespace MobileShopping.Repository
         {
             var _web = HtmlWebSingleton.GetInstance();
             HtmlDocument document = _web.Load(baseLink + link);
-            var detail = document.DocumentNode.QuerySelector(".product-details");
+            // set detail where we take the first class contain all item we want to selectoe
+            //var detail = document.DocumentNode.QuerySelector(".product-details");
+            var detail = document.DocumentNode.QuerySelector(".f-wrap");
             var product = new ProductDetail();
-            product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".info .simple-prop").InnerHtml.InsertNewLine().RemoveHtmlTag());
+            //product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".info .simple-prop").InnerHtml.InsertNewLine().RemoveHtmlTag());
+            product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".fs-dtbox main_spec .fs-tsright").InnerHtml.InsertNewLine().RemoveHtmlTag());
             //product.Description = detail.QuerySelector(".info .simple-prop").InnerHtml;
             product.ProductName = HtmlEntity.DeEntitize(detail.QuerySelector("h1").InnerText);
             product.Price = detail.QuerySelector(".product-price span").InnerText;
@@ -48,11 +51,11 @@ namespace MobileShopping.Repository
                 //var price = item.QuerySelector(".product-price").InnerText;
                 //var image = item.QuerySelector(".mosaic-block .mosaic-backdrop img").Attributes["src"].Value;
                 //var path = item.QuerySelector(".mosaic-block > a").Attributes["href"].Value;
-                //System.Console.WriteLine(HtmlEntity.DeEntitize(item.QuerySelector(".fs-lpil-img a").InnerHtml));
-                var productName = item.QuerySelector(".fs-lpil-img").Attributes["title"].Value;
-                var price = item.QuerySelector(".product-price").InnerText;
-                var image = item.QuerySelector(".mosaic-block .mosaic-backdrop img").Attributes["src"].Value;
-                var path = item.QuerySelector(".mosaic-block > a").Attributes["href"].Value;
+                //var productName = item.QuerySelector(".fs-lpil-img").Attributes["title"].Value;
+                var productName = HtmlEntity.DeEntitize(item.QuerySelector(".fs-lpil-if .fs-lpil-name >a").InnerText);
+                var price = item.QuerySelector(".fs-lpil-if .fs-lpil-price >p").InnerText;
+                var image = item.QuerySelector(".fs-lpil-img img").Attributes["data-original"].Value;
+                var path = item.QuerySelector(".fs-lpil-img").Attributes["href"].Value;
                 items.Add(new Product()
                 {
                     ProductName = productName,

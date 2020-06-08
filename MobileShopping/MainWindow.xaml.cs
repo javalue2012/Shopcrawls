@@ -16,6 +16,7 @@ using MobileShopping.Service;
 using System.Collections.ObjectModel;
 using MobileShopping.Model;
 using MobileShopping.Utility;
+using System.Data.SqlClient;
 
 namespace MobileShopping
 {
@@ -146,6 +147,61 @@ namespace MobileShopping
                 detailProductWindow.Topmost = false; // important
                 detailProductWindow.Focus();
             }
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+           
+                // connection and insert
+            string connetionString;
+            SqlConnection cnn;
+            connetionString = @"Data Source=DN-LUONGNV\MSSQLSERVER2;Initial Catalog=DataTest;Integrated Security=True";
+            cnn = new SqlConnection(connetionString);
+            cnn.Open();
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            String sql = "";
+            if (ProductList == null)
+            {
+                ProductList = new ObservableCollection<Product>();
+            }
+            else
+            {
+                ProductList.Clear();
+            }
+            ProductList = new ObservableCollection<Product>(_shoppingService.GetProductListByIndex(txtSearch.Text.Trim(), currentPageIndex + 1));
+            foreach (var item in ProductList)
+            {
+                string ProductId, ProductName, Price, Thumbnail, Link;
+                ProductId = item.ProductId;
+                if (string.IsNullOrEmpty(ProductId))
+                {
+                    ProductId = "null";
+                }
+                ProductName = item.ProductName;
+                Price = item.Price;
+                Thumbnail = item.Thumbnail;
+                Link = item.Link;
+               
+                    sql = "INSERT INTO Product (ProductId, ProductName, Price,Thumbnail,Link) VALUES ('" + ProductId + "',N'" + ProductName + "', N'" + Price + "',N'" + Thumbnail + "',N'" + Link + "')";
+                
+                try
+                {
+                    string sql1 = "Select ProductName from Product ";
+                    command = new SqlCommand(sql1, cnn);
+                    var execute = command.ExecuteReader();
+                    adapter.InsertCommand = new SqlCommand(sql, cnn);
+                    adapter.InsertCommand.ExecuteNonQuery();
+                    command.Dispose();
+                    //MessageBox.Show("Connection Open  !");
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            cnn.Close();
+
         }
     }
 }

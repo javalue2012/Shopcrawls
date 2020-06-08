@@ -23,11 +23,13 @@
         <Button Height="23" HorizontalAlignment="Left" Margin="18,0,0,16" Name="btnFirst" 
                 VerticalAlignment="Bottom" Width="75" Click="btnFirst_Click">First</Button>
         <Button Height="23" HorizontalAlignment="Left" Margin="115,0,0,16" Name="btnPrev" 
-                VerticalAlignment="Bottom" Width="75" Click="btnPrev_Click">Previous</Button>
-        <Button Height="23" Margin="213,0,0,16" Name="btnNext" 
-                VerticalAlignment="Bottom" Click="btnNext_Click" HorizontalAlignment="Left" Width="96">Next</Button>
-        <Button Height="23" HorizontalAlignment="Left" Margin="336,0,0,16" Name="btnLast" 
-                VerticalAlignment="Bottom" Width="75" Click="btnLast_Click">Last</Button>
+                VerticalAlignment="Bottom" Width="61" Click="btnPrev_Click">Previous</Button>
+        <Button Height="23" Margin="197,0,0,15" Name="btnNext" 
+                VerticalAlignment="Bottom" Click="btnNext_Click" HorizontalAlignment="Left" Width="60">Next</Button>
+        <Button Height="23" Margin="276,0,309,15" Name="btnLast" 
+                VerticalAlignment="Bottom" Click="btnLast_Click" HorizontalAlignment="Left" Width="60">Last</Button>
+        <Button Height="23" Margin="375,0,0,15" Name="btnUpdate" 
+                VerticalAlignment="Bottom" Click="btnUpdate_Click" HorizontalAlignment="Left" Width="60">Update</Button>
 
         <TextBlock Height="21" Margin="0,0,93,18" Name="tbCurrentPage" 
                    VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="43" />
@@ -37,5 +39,8 @@
                    VerticalAlignment="Bottom" Width="28" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="12,12,12,0" Name="txtSearch" VerticalAlignment="Top" Width="537" />
         <Button Content="Tìm kiếm" Height="23" Margin="0,12,12,0" Name="btnSearch" VerticalAlignment="Top" Click="btnSearch_Click" HorizontalAlignment="Right" Width="75" />
+
+
+
     </Grid>
 </Window>
