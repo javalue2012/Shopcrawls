@@ -148,11 +148,36 @@ namespace MobileShopping
                 detailProductWindow.Focus();
             }
         }
-
+        public List<string> GetOnline()
+        {
+            string connetionString;
+            SqlConnection cnn;
+            connetionString = @"Data Source=DN-LUONGNV\MSSQLSERVER2;Initial Catalog=DataTest;Integrated Security=True";
+            cnn = new SqlConnection(connetionString);
+            cnn.Open();
+            SqlCommand command;
+            List<string> result = new List<string>();
+            using (SqlConnection conn = new SqlConnection(connetionString))
+            {
+                conn.Open();
+                using (command = new SqlCommand("Select ProductName from Product", cnn))
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                        // department = reader[1] as string;
+                        //break for single row or you can continue if you have multiple rows...
+                        //break;
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return result;
+        }
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-           
-                // connection and insert
             string connetionString;
             SqlConnection cnn;
             connetionString = @"Data Source=DN-LUONGNV\MSSQLSERVER2;Initial Catalog=DataTest;Integrated Security=True";
@@ -178,30 +203,47 @@ namespace MobileShopping
                 {
                     ProductId = "null";
                 }
-                ProductName = item.ProductName;
-                Price = item.Price;
-                Thumbnail = item.Thumbnail;
-                Link = item.Link;
-               
-                    sql = "INSERT INTO Product (ProductId, ProductName, Price,Thumbnail,Link) VALUES ('" + ProductId + "',N'" + ProductName + "', N'" + Price + "',N'" + Thumbnail + "',N'" + Link + "')";
-                
                 try
                 {
-                    string sql1 = "Select ProductName from Product ";
-                    command = new SqlCommand(sql1, cnn);
-                    var execute = command.ExecuteReader();
-                    adapter.InsertCommand = new SqlCommand(sql, cnn);
-                    adapter.InsertCommand.ExecuteNonQuery();
-                    command.Dispose();
-                    //MessageBox.Show("Connection Open  !");
+                    using (command = new SqlCommand("Select COUNT(*) from Product where ProductName = '" + item .ProductName+ "'  ", cnn))
+                    {
+                        int count = 0;
+                        count = (Int32)command.ExecuteScalar();
+                        if(count > 0)
+                        {
+                        ProductName = item.ProductName;
+                        Price = item.Price;
+                        Thumbnail = item.Thumbnail;
+                        Link = item.Link;
+                        sql = "UPDATE Product SET ProductId = '1', Price = 'N'" + Price + "'', Thumbnail ='" + Thumbnail + "', Link = '" + Link + "' Where ProductName = '" + ProductName + "'";
+                        adapter.InsertCommand = new SqlCommand(sql, cnn);
+                        adapter.InsertCommand.ExecuteNonQuery();
+                        //MessageBox.Show("please see");
+                        }
+                        else
+                        {
+                            cnn.Open();
+                            ProductName = item.ProductName;
+                            Price = item.Price;
+                            Thumbnail = item.Thumbnail;
+                            Link = item.Link;
+                            sql = "INSERT INTO Product (ProductId, ProductName, Price,Thumbnail,Link) VALUES ('" + ProductId + "',N'" + ProductName + "', N'" + Price + "',N'" + Thumbnail + "',N'" + Link + "')";
+                            adapter.InsertCommand = new SqlCommand(sql, cnn);
+                            adapter.InsertCommand.ExecuteNonQuery();
+                            MessageBox.Show("please don't see");
+                        }
+                        //SqlDataReader reader = command.ExecuteReader();
+                        //reader.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
+
                     throw ex;
                 }
+               
             }
             cnn.Close();
-
         }
     }
 }
