@@ -180,6 +180,7 @@ namespace MobileShopping
         {
             string connetionString;
             SqlConnection cnn;
+            //connetionString = @"Data Source=DN-LUONGNV\MSSQLSERVER2;Initial Catalog=DataTest;Integrated Security=True";
             connetionString = @"Data Source=DN-LUONGNV\MSSQLSERVER2;Initial Catalog=DataTest;Integrated Security=True";
             cnn = new SqlConnection(connetionString);
             cnn.Open();
