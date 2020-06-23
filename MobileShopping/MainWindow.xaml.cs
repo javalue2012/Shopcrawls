@@ -185,7 +185,7 @@ namespace MobileShopping
             cnn.Open();
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
-            String sql = "";
+            string sql = "";
             if (ProductList == null)
             {
                 ProductList = new ObservableCollection<Product>();
@@ -211,18 +211,17 @@ namespace MobileShopping
                         count = (Int32)command.ExecuteScalar();
                         if(count > 0)
                         {
-                        ProductName = item.ProductName;
-                        Price = item.Price;
-                        Thumbnail = item.Thumbnail;
-                        Link = item.Link;
-                        sql = "UPDATE Product SET ProductId = '1', Price = 'N'" + Price + "'', Thumbnail ='" + Thumbnail + "', Link = '" + Link + "' Where ProductName = '" + ProductName + "'";
-                        adapter.InsertCommand = new SqlCommand(sql, cnn);
-                        adapter.InsertCommand.ExecuteNonQuery();
-                        //MessageBox.Show("please see");
+                            ProductName = item.ProductName;
+                            Price = item.Price;
+                            Thumbnail = item.Thumbnail;
+                            Link = item.Link;
+                            sql = "UPDATE Product SET ProductId = '1', Price = '"+Price + "', Thumbnail ='" + Thumbnail + "', Link = '" + Link + "' Where ProductName = '" + ProductName + "'";
+                            adapter.InsertCommand = new SqlCommand(sql, cnn);
+                            adapter.InsertCommand.ExecuteNonQuery();
+                            //MessageBox.Show("please see");
                         }
                         else
                         {
-                            cnn.Open();
                             ProductName = item.ProductName;
                             Price = item.Price;
                             Thumbnail = item.Thumbnail;
@@ -230,7 +229,7 @@ namespace MobileShopping
                             sql = "INSERT INTO Product (ProductId, ProductName, Price,Thumbnail,Link) VALUES ('" + ProductId + "',N'" + ProductName + "', N'" + Price + "',N'" + Thumbnail + "',N'" + Link + "')";
                             adapter.InsertCommand = new SqlCommand(sql, cnn);
                             adapter.InsertCommand.ExecuteNonQuery();
-                            MessageBox.Show("please don't see");
+                            //MessageBox.Show("please don't see");
                         }
                         //SqlDataReader reader = command.ExecuteReader();
                         //reader.Close();

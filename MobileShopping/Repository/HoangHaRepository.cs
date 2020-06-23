@@ -13,9 +13,15 @@ namespace MobileShopping.Repository
         //private string baseLink = "https://hoanghamobile.com";
         //private string mobileListLink = "/dien-thoai-di-dong-c14.html?p={0}";
         //private string searchLink = "/tim-kiem.html?p={0}&kwd={1}";
-        private string baseLink = "https://fptshop.com.vn";
-        private string mobileListLink = "/dien-thoai?sort=ban-chay-nhat?p={0}";
-        private string searchLink = "/tim-kiem&kwd={1}";
+
+        //private string baseLink = "https://fptshop.com.vn";
+        //private string mobileListLink = "/dien-thoai?sort=ban-chay-nhat?p={0}";
+        //private string searchLink = "/tim-kiem&kwd={1}";
+
+
+        private string baseLink = "https://edition.cnn.com";
+        private string mobileListLink = "/search";
+        private string searchLink = "/search?size=10&q=trump&kwd={1}";
 
         public ProductDetail GetProductDetail(string link)
         {
@@ -26,7 +32,7 @@ namespace MobileShopping.Repository
             var detail = document.DocumentNode.QuerySelector(".f-wrap");
             var product = new ProductDetail();
             //product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".info .simple-prop").InnerHtml.InsertNewLine().RemoveHtmlTag());
-            product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".fs-dtbox main_spec .fs-tsright").InnerHtml.InsertNewLine().RemoveHtmlTag());
+            product.Description = HtmlEntity.DeEntitize(detail.QuerySelector(".fs-dtbox main_spec .fs-tsright >li").InnerHtml.InsertNewLine().RemoveHtmlTag());
             //product.Description = detail.QuerySelector(".info .simple-prop").InnerHtml;
             product.ProductName = HtmlEntity.DeEntitize(detail.QuerySelector("h1").InnerText);
             product.Price = detail.QuerySelector(".product-price span").InnerText;
@@ -43,7 +49,8 @@ namespace MobileShopping.Repository
             var web = HtmlWebSingleton.GetInstance();
             HtmlDocument document = web.Load(string.IsNullOrEmpty(search) ? string.Format(baseLink + mobileListLink, index) : string.Format(baseLink + searchLink, index, search));
            // var threadItems = document.DocumentNode.QuerySelectorAll(".list-item").ToList();
-            var threadItems = document.DocumentNode.QuerySelectorAll(".fs-lpil").ToList();
+            //var threadItems = document.DocumentNode.QuerySelectorAll(".fs-lpil").ToList();
+            var threadItems = document.DocumentNode.QuerySelectorAll(".cnn-search__results-list").ToList();
             List<Product> items = new List<Product>();
             foreach (var item in threadItems)
             {
